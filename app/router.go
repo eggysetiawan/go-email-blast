@@ -11,9 +11,9 @@ import (
 func Router() {
 	router := mux.NewRouter()
 
-	emh := EmailBlastHandler{service.NewEmailBlastService(domain.NewEmailBlastRepositorySmtp())}
+	ebh := EmailBlastHandler{service.NewEmailBlastService(domain.NewEmailBlastRepositorySmtp())}
 
-	router.HandleFunc("email-blast", emh.send)
+	router.HandleFunc("/email-blast", ebh.send).Methods(http.MethodPost)
 
 	log.Fatal(http.ListenAndServe("localhost:3001", router))
 

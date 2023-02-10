@@ -22,7 +22,7 @@ func (d DefaultRepositorySmtp) Send(request EmailBlast) *errs.Exception {
 	m.SetBody("text/html", request.Body)
 
 	if request.Filename != "" {
-		m.Attach(request.Filename)
+		m.Attach("./tmp/" + request.Filename)
 	}
 
 	port, _ := strconv.Atoi(os.Getenv("SMTP_PORT"))

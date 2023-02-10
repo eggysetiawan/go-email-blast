@@ -8,7 +8,7 @@ type EmailBlast struct {
 	Subject    string `json:"subject"`
 	Body       string `json:"body"`
 	Attachment string `json:"attachment"`
-	Filename   string `json:"fileName"`
+	Filename   string `json:"filename"`
 }
 
 type IEmailBlastRepository interface {
