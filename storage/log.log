@@ -1,0 +1,2 @@
+{"level":"info","@timestamp":"2023-02-10T16:41:37.864+0700","caller":"email-blast/main.go:14","msg":"Starting application..."}
+{"level":"info","@timestamp":"2023-02-10T16:43:00.910+0700","caller":"email-blast/main.go:12","msg":"Starting application..."}
