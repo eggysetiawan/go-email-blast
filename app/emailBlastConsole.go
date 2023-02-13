@@ -36,12 +36,11 @@ func (ebc *EmailBlastConsole) DownloadAndSend() {
 			m.Lock()
 
 			eb := domain.EmailBlast{
-				Name:       p.ParticipantName,
-				Email:      "setiawaneggy@gmail.com",
-				Subject:    "test subject without pointer final",
-				Body:       "test body pointer" + p.ParticipantName,
-				Attachment: "",
-				Filename:   p.Filename,
+				Name:     p.ParticipantName,
+				Email:    p.ParticipantEmail,
+				Subject:  p.Subject,
+				Body:     p.Body,
+				Filename: p.Filename,
 			}
 			ebc.service.SendEmail(eb)
 			m.Unlock()

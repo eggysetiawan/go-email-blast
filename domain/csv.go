@@ -18,7 +18,19 @@ type Csv struct {
 	Link             string `csv:"Link Sertifikat"`
 	Training         string `csv:"Nama Pelatihan"`
 	TrainingDate     string `csv:"Tanggal Pelatihan"`
+	Subject          string `csv:"Subject"`
+	Body             string `csv:"Body"`
 	Filename         string
+}
+
+func (csv *Csv) GetBody() string {
+	body := csv.Body
+	body = strings.ReplaceAll(body, "<<Asal Instansi>>", csv.Instantion)
+	body = strings.ReplaceAll(body, "<<NAMA PESERTA>>", csv.ParticipantName)
+	body = strings.ReplaceAll(body, "<<Nama Pelatihan>>", csv.Training)
+	body = strings.ReplaceAll(body, "<<Tanggal Pelatihan>>", csv.TrainingDate)
+
+	return body
 }
 
 func (csv Csv) Download(group *sync.WaitGroup, mutex *sync.Mutex) {
