@@ -4,17 +4,19 @@ import (
 	"fmt"
 	"github.com/eggysetiawan/go-email-blast/domain"
 	"github.com/eggysetiawan/go-email-blast/logger"
+	"github.com/eggysetiawan/go-email-blast/service"
 	"github.com/gocarina/gocsv"
 	"os"
-	"sync"
 )
 
 func Console() {
-	ReadCsv("./tmp/test_csv")
+	ebc := EmailBlastConsole{service.NewEmailBlastService(domain.NewEmailBlastRepositorySmtp())}
+
+	ebc.DownloadAndSend()
 }
 
-func ReadCsv(fn string) {
-	clientsFile, err := os.OpenFile("./tmp/test_csv.csv", os.O_RDWR|os.O_CREATE, os.ModePerm)
+func ReadCsv(fn string) []domain.Csv {
+	clientsFile, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE, os.ModePerm)
 
 	if err != nil {
 		//return nil, errs.NewUnexpectedException(err.Error())
@@ -26,6 +28,8 @@ func ReadCsv(fn string) {
 
 	var csv []domain.Csv
 
+	var newCsv []domain.Csv
+
 	err = gocsv.UnmarshalFile(clientsFile, &csv)
 
 	if err != nil {
@@ -33,25 +37,14 @@ func ReadCsv(fn string) {
 		logger.Error(err.Error())
 	}
 
-	group := &sync.WaitGroup{}
+	for _, c := range csv {
+		fn := fmt.Sprintf("./tmp/E SERTIFIKAT_%s_%s_%s.pdf", c.Training, c.ParticipantName, c.TrainingDate)
 
-	mutex := &sync.Mutex{}
+		c.Filename = fn
 
-	var t = 0
-
-	for _, client := range csv {
-		group.Add(1)
-		go func(client domain.Csv) {
-			defer group.Done()
-			mutex.Lock()
-			fmt.Println("Hello", client)
-			t++
-			mutex.Unlock()
-		}(client)
-
+		newCsv = append(newCsv, c)
 	}
-	group.Wait()
 
-	fmt.Println("Total ", t)
+	return newCsv
 
 }
